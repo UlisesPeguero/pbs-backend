@@ -1,9 +1,6 @@
 package com.portfolio.api.models;
 
 import java.io.Serializable;
-
-import org.springframework.stereotype.Indexed;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
