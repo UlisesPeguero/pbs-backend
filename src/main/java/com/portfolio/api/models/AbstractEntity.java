@@ -11,8 +11,8 @@ import lombok.Data;
 
 @MappedSuperclass
 @Data
-public abstract class AbstractEntity implements Serializable{
-  
+public abstract class AbstractEntity implements Serializable {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   protected Long id;
@@ -22,7 +22,5 @@ public abstract class AbstractEntity implements Serializable{
 
   @Column(columnDefinition = "BOOLEAN default true")
   protected boolean active = true;
-
-  
 
 }

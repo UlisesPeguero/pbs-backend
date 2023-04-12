@@ -7,11 +7,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "modules")
 public class Module extends AbstractEntity {
-  
+
   @Column(length = 20)
   private String path;
 
@@ -24,5 +24,4 @@ public class Module extends AbstractEntity {
   @Column(length = 25)
   private String role;
 
-  
 }
