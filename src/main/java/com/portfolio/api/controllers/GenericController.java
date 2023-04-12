@@ -37,4 +37,8 @@ public abstract class GenericController<T extends AbstractEntity> {
     return ResponseEntity.ok(service.findAll(page, rows, orderBy, order));
   }
 
+  @GetMapping("{id}")
+  public ResponseEntity<T> doGet(@PathVariable Long id) {
+    return ResponseEntity.ofNullable(service.findById(id));
+  }
 }
