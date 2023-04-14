@@ -4,36 +4,42 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.hibernate.annotations.NotFound;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.portfolio.api.models.AbstractEntity;
+import com.portfolio.api.exceptions.ResourceNotFoundException;
+import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
 
-public abstract class GenericService<T extends AbstractEntity> {
+import jakarta.transaction.Transactional;
+
+public abstract class GenericService<T extends GenericEntity<T>> {
 
   protected final GenericRepository<T> repository;
+  protected final String resourceName;
 
   protected GenericService(GenericRepository<T> repository) {
-    this.repository = repository;
+    this(repository, "resource");
   }
 
-  public Page<T> findAll(Integer pageNumber, Integer rowsPerPage, String orderBy, String order) {
+  protected GenericService(GenericRepository<T> repository, String resourceName) {
+    this.repository = repository;
+    this.resourceName = resourceName;
+  }
+
+  public Page<T> getAll(Integer pageNumber, Integer rowsPerPage, String orderBy, String order) {
     Pageable page;
     Sort sort = getSorter(orderBy, order);
     page = PageRequest.of(pageNumber, rowsPerPage == null ? 15 : rowsPerPage, sort);
     return repository.findAll(page);
   }
 
-  public List<T> findAll(String orderBy, String order) {
+  public List<T> getAll(String orderBy, String order) {
     Sort sort = getSorter(orderBy, order);
     return repository.findAll(sort);
   }
 
-  public List<T> findAll() {
+  public List<T> getAll() {
     return repository.findAll();
   }
 
@@ -46,8 +52,24 @@ public abstract class GenericService<T extends AbstractEntity> {
     return sort;
   }
 
-  public T findById(Long id) {
-    return this.repository.findById(id).orElse(null);
+  public T get(Long id) throws ResourceNotFoundException {
+    return this.repository.findById(id).orElseThrow(
+        () -> this.getResourceNotFoundException(id));
   }
 
+  @Transactional
+  public T create(T newItem) {
+    return this.repository.saveAndFlush(newItem);
+  }
+
+  @Transactional
+  public T update(Long id, T updatedItem) throws ResourceNotFoundException {
+    T original = get(id);
+    original.update(updatedItem);
+    return repository.saveAndFlush(original);
+  }
+
+  private ResourceNotFoundException getResourceNotFoundException(long id) {
+    return new ResourceNotFoundException("The " + resourceName + " with ID:" + id + " was not found.");
+  }
 }
