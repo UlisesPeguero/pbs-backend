@@ -46,4 +46,8 @@ public abstract class GenericService<T extends AbstractEntity> {
     return sort;
   }
 
+  public T findById(Long id) {
+    return this.repository.findById(id).orElse(null);
+  }
+
 }
