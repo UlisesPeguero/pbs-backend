@@ -59,7 +59,7 @@ public abstract class GenericService<T extends GenericEntity<T>> {
 
   @Transactional
   public T create(T newItem) {
-    return this.repository.saveAndFlush(newItem);
+    return repository.saveAndFlush(newItem);
   }
 
   @Transactional
@@ -67,6 +67,12 @@ public abstract class GenericService<T extends GenericEntity<T>> {
     T original = get(id);
     original.update(updatedItem);
     return repository.saveAndFlush(original);
+  }
+
+  @Transactional
+  public void delete(Long id) throws ResourceNotFoundException {
+    get(id);
+    repository.deleteById(id);
   }
 
   private ResourceNotFoundException getResourceNotFoundException(long id) {
