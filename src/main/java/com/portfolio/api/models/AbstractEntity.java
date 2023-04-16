@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Version;
 import lombok.Data;
 
 @MappedSuperclass
@@ -17,10 +16,6 @@ public abstract class AbstractEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   protected Long id;
 
-  @Version
-  protected Integer versionNumber;
-
   @Column(columnDefinition = "BOOLEAN default true")
-  protected boolean active = true;
-
+  protected Boolean active = true;
 }
