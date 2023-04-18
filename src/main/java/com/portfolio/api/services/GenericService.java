@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.apache.catalina.webresources.Cache;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.portfolio.api.exceptions.ResourceNotFoundException;
+import com.portfolio.api.exceptions.UnsafeResourceDeletionException;
 import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
 
@@ -69,9 +71,14 @@ public abstract class GenericService<T extends GenericEntity<T>> {
     return repository.saveAndFlush(original);
   }
 
+  protected boolean canBeDeleted(T item) {
+    return true;
+  }
+
   @Transactional
   public void delete(Long id) throws ResourceNotFoundException {
-    get(id);
+    if (!canBeDeleted(get(id)))
+      return;
     repository.deleteById(id);
   }
 
