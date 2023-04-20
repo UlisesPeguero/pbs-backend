@@ -3,6 +3,8 @@ package com.portfolio.api.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,9 +14,13 @@ import lombok.EqualsAndHashCode;
 @Table(name = "modules")
 public class Module extends AbstractEntity implements GenericEntity<Module> {
 
+  @NotNull
+  @Size(min = 3, max = 20, message = "Path must be at least 3 and 20 characters.")
   @Column(length = 20)
   private String path;
 
+  @NotNull
+  @Size(min = 3, max = 20, message = "Path must be at least 3 and 20 characters.")
   @Column(length = 20)
   private String name;
 
