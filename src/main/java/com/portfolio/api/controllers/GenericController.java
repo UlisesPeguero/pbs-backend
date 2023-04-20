@@ -4,15 +4,21 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.portfolio.api.controllers.data.MessagePayload;
+import com.portfolio.api.exceptions.FailedValidationException;
 import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
 import com.portfolio.api.services.GenericService;
+
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,8 +58,12 @@ public abstract class GenericController<T extends GenericEntity<T>> {
   }
 
   @PostMapping
-  public ResponseEntity<T> create(@RequestBody T newItem) {
-    return ResponseEntity.ok(service.create(newItem));
+  public ResponseEntity<T> create(@Valid @RequestBody T newItem, Errors errors) {
+    try {
+      return ResponseEntity.ok(service.create(newItem));
+    } catch (ConstraintViolationException exception) {
+      throw new FailedValidationException(errors);
+    }
   }
 
   @PutMapping("/{id}")
