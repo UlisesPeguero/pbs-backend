@@ -4,12 +4,10 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.apache.catalina.webresources.Cache;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.portfolio.api.exceptions.ResourceNotFoundException;
-import com.portfolio.api.exceptions.UnsafeResourceDeletionException;
 import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
 
