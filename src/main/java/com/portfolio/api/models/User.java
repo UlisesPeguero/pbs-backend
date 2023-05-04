@@ -1,5 +1,6 @@
 package com.portfolio.api.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -47,7 +48,7 @@ public class User extends AbstractEntity implements GenericEntity<User>, UserDet
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Role> roles = new HashSet<>();
+  private List<Role> roles = new ArrayList<>();
 
   // TODO: Add Employee model to the user
   // @OneToOne

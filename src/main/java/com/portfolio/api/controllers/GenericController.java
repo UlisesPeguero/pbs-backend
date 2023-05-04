@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.portfolio.api.controllers.data.MessagePayload;
+import com.portfolio.api.controllers.payloads.MessageResponse;
 import com.portfolio.api.exceptions.FailedValidationException;
 import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
@@ -68,14 +68,14 @@ public abstract class GenericController<T extends GenericEntity<T>> {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<MessagePayload> delete(@PathVariable Long id) {
+  public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
     service.delete(id);
-    return ResponseEntity.ok(new MessagePayload("Resource has been deleted."));
+    return ResponseEntity.ok(new MessageResponse("Resource has been deleted."));
   }
 
   protected void checkForValidationErrors(Errors validation) {
-      if(validation.hasErrors())
-        throw new FailedValidationException(validation);
+    if (validation.hasErrors())
+      throw new FailedValidationException(validation);
   }
 
 }
