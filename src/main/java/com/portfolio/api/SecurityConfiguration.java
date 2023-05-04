@@ -8,10 +8,16 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.portfolio.api.security.AuthenticationJwtEntryPoint;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+import com.portfolio.api.security.AuthenticationJwtTokenFilter;
 import com.portfolio.api.services.UserDetailsServiceImplementation;
 
 @Configuration
@@ -20,6 +26,14 @@ public class SecurityConfiguration {
 
   @Autowired
   private UserDetailsServiceImplementation userDetailsService;
+
+  @Autowired
+  private AuthenticationJwtEntryPoint unauthorizedHandler;
+
+  @Bean
+  public AuthenticationJwtTokenFilter authenticationJwtTokenFilter() {
+    return new AuthenticationJwtTokenFilter();
+  }
 
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
@@ -38,6 +52,17 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity.cors(withDefaults()).csrf(withDefaults())
+        .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandler))
+        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            authorize -> authorize
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/test/**").permitAll()
+                .anyRequest().authenticated());
+    httpSecurity.authenticationProvider(authenticationProvider());
+    httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    
     return httpSecurity.build();
   }
 
