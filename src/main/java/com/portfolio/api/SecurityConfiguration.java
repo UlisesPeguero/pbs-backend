@@ -8,27 +8,23 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.portfolio.api.repositories.UserRepository;
+import com.portfolio.api.services.UserDetailsServiceImplementation;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
   @Autowired
-  private UserRepository userRepository;
+  private UserDetailsServiceImplementation userDetailsService;
 
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-    authenticationProvider.setUserDetailsService(
-        username -> userRepository.findByUsername(username)
-            .orElseThrow(
-                () -> new UsernameNotFoundException("Auth.User: " + username + "  was not found.")));
+    authenticationProvider.setUserDetailsService(userDetailsService);
     authenticationProvider.setPasswordEncoder(passwordEncoder());
 
     return authenticationProvider;
