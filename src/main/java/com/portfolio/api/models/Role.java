@@ -17,6 +17,14 @@ public class Role extends AbstractEntity implements GenericEntity<Role> {
   @Column(length = 20)
   private String name;
 
+  public Role() {
+  }
+
+  public Role(String name) {
+    super();
+    this.name = name;
+  }
+
   public void update(Role updatedRole) {
     this.name = updatedRole.getName();
   }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.portfolio.api.services.GenericService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 public abstract class GenericController<T extends GenericEntity<T>> {
 
   protected final GenericService<T> service;

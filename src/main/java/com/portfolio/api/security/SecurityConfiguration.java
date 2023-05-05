@@ -52,13 +52,16 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.cors().and().csrf().disable()
+    httpSecurity
+        .cors(withDefaults())
+        .csrf(crsf -> crsf.disable())
         .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        // .securityMatcher("/api/**")
+        .securityMatcher("/api/**")
         .authorizeHttpRequests(
             authorize -> authorize
-                .requestMatchers("/api/auth/signin").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/users/**").permitAll()
                 .anyRequest().authenticated());
     httpSecurity.authenticationProvider(authenticationProvider());
     httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

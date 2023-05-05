@@ -1,5 +1,7 @@
 package com.portfolio.api.controllers;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.api.controllers.payloads.AuthenticatedUserResponse;
 import com.portfolio.api.controllers.payloads.LoginRequest;
+import com.portfolio.api.controllers.payloads.MessageResponse;
 import com.portfolio.api.models.User;
 import com.portfolio.api.repositories.RoleRepository;
 import com.portfolio.api.repositories.UserRepository;
 import com.portfolio.api.security.JwtCookiesManager;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -65,5 +69,22 @@ public class AuthenticationController {
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(new AuthenticatedUserResponse(user));
+  }
+
+  @Transactional
+  @PostMapping("/testUser")
+  public ResponseEntity<?> addTestUser(@Valid @RequestBody User user) {
+    logger.info("Attempt to create user: {}", user.getUsername());
+
+    Optional<User> existsUser = userRepository.findByUsername(user.getUsername());
+    if (existsUser.isPresent()) {
+      return ResponseEntity.ok(new MessageResponse("Exists already."));
+    }
+    roleRepository.saveAll(user.getRoles());
+    user.setPassword(encoder.encode(user.getPassword()));
+    userRepository.save(user);
+
+    return ResponseEntity.ok(new MessageResponse("User created succesfully!"));
+
   }
 }
