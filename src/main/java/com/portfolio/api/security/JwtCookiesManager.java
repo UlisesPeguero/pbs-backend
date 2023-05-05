@@ -24,18 +24,18 @@ import jakarta.servlet.http.HttpServletRequest;
 public class JwtCookiesManager {
   private static final Logger logger = LoggerFactory.getLogger(JwtCookiesManager.class);
 
-  @Value("app.auth.cookie.path")
+  @Value("${app.auth.cookie.path}")
   private String cookiePath;
-  @Value("app.auth.cookie.maxAgeMilliseconds")
+  @Value("${app.auth.cookie.maxAgeMilliseconds}")
   private int cookieMaxAge;
 
-  @Value("app.auth.jwt.secret")
+  @Value("${app.auth.jwt.secret}")
   private String jwtSecret;
 
-  @Value("app.auth.jwt.expirationMilliseconds")
+  @Value("${app.auth.jwt.expirationMilliseconds}")
   private int jwtExpiration;
 
-  @Value("app.auth.cookie.name")
+  @Value("${app.auth.cookie.name}")
   private String jwtCookieName;
 
   public String getJwtFromCookies(HttpServletRequest request) {
