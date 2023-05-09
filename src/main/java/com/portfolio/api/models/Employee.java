@@ -1,6 +1,5 @@
 package com.portfolio.api.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -13,7 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "employees")
 public class Employee extends AbstractEntity implements GenericEntity<Employee> {
@@ -44,11 +43,13 @@ public class Employee extends AbstractEntity implements GenericEntity<Employee> 
     @Email
     private String email;
 
-    @Column(columnDefinition = "boolean default true")
-    private Boolean active = true;
-
-    @Override
-    public void update(Employee updatedItem) {
-
+    public void update(Employee updatedEmployee) {
+        this.firstName = updatedEmployee.getFirstName();
+        this.lastName = updatedEmployee.getLastName();
+        this.address = updatedEmployee.getAddress();
+        this.address2 = updatedEmployee.getAddress2();
+        this.phoneNumber = updatedEmployee.getPhoneNumber();
+        this.email = updatedEmployee.getEmail();
+        this.active = updatedEmployee.getActive();
     }
 }
