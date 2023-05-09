@@ -3,6 +3,7 @@ package com.portfolio.api.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = { @UniqueConstraint(columnNames = "name") })
 public class Role extends AbstractEntity implements GenericEntity<Role> {
 
   @NotNull

@@ -63,7 +63,6 @@ public class SecurityConfiguration {
             authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/**").hasAuthority("ADMIN")
-                .requestMatchers("/api/modules/**").hasAuthority("MODULES")
                 .anyRequest().authenticated());
     httpSecurity.authenticationProvider(authenticationProvider());
     httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
