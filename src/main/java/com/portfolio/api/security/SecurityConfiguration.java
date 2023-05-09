@@ -61,7 +61,7 @@ public class SecurityConfiguration {
         .securityMatcher("/api/**")
         .authorizeHttpRequests(
             authorize -> authorize
-                .requestMatchers("/api/auth/signin").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/modules/**").hasAuthority("MODULES")
                 .anyRequest().authenticated());
