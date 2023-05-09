@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.portfolio.api.controllers.data.MessagePayload;
+import com.portfolio.api.controllers.payloads.MessageResponse;
 import com.portfolio.api.exceptions.FailedValidationException;
 import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
@@ -21,6 +22,7 @@ import com.portfolio.api.services.GenericService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 public abstract class GenericController<T extends GenericEntity<T>> {
 
   protected final GenericService<T> service;
@@ -68,14 +70,14 @@ public abstract class GenericController<T extends GenericEntity<T>> {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<MessagePayload> delete(@PathVariable Long id) {
+  public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
     service.delete(id);
-    return ResponseEntity.ok(new MessagePayload("Resource has been deleted."));
+    return ResponseEntity.ok(new MessageResponse("Resource has been deleted."));
   }
 
   protected void checkForValidationErrors(Errors validation) {
-      if(validation.hasErrors())
-        throw new FailedValidationException(validation);
+    if (validation.hasErrors())
+      throw new FailedValidationException(validation);
   }
 
 }

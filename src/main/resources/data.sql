@@ -33,3 +33,6 @@ VALUES ('home', 'Home', 'bi-house', 'employee'),
     'admin'
   ),
   ('users', 'User', 'bi-people-fill', 'admin');
+#Roles
+INSERT INTO roles(`name`)
+VALUES('ADMIN');

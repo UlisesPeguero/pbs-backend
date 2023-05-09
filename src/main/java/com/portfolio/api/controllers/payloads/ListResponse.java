@@ -1,4 +1,4 @@
-package com.portfolio.api.controllers.data;
+package com.portfolio.api.controllers.payloads;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,15 +8,15 @@ import com.portfolio.api.models.AbstractEntity;
 import lombok.Data;
 
 @Data
-public class ListPayload<T extends AbstractEntity> implements Serializable {
+public class ListResponse<T extends AbstractEntity> implements Serializable {
 
   private int numberRecords;
   private List<T> payload;
 
-  public ListPayload() {
+  public ListResponse() {
   }
 
-  public ListPayload(List<T> payload) {
+  public ListResponse(List<T> payload) {
     setPayload(payload);
   }
 
