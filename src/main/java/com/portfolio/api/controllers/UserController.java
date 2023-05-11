@@ -60,4 +60,10 @@ public class UserController extends GenericController<User> {
     return ResponseEntity.ok(userDetails.getAuthorities());
   }
 
+  @GetMapping("testRoles")
+  @PreAuthorize("hasAuthority('USER')")
+  public String testRoles() {
+    return "It works";
+  }
+
 }

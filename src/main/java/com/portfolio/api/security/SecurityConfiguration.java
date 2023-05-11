@@ -58,11 +58,11 @@ public class SecurityConfiguration {
         .csrf(crsf -> crsf.disable())
         .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .securityMatcher("/api/**")
+        // .securityMatcher("/api/**")
         .authorizeHttpRequests(
             authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/**").hasAuthority("ADMIN")
+                // .requestMatchers("/api/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated());
     httpSecurity.authenticationProvider(authenticationProvider());
     httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
