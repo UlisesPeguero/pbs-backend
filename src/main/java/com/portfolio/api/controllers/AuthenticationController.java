@@ -71,6 +71,13 @@ public class AuthenticationController {
         .body(new AuthenticatedUserResponse(user));
   }
 
+  @PostMapping("/signout")
+  public ResponseEntity<?> logoutUser() {
+    ResponseCookie cookie = cookiesManager.createEmptyJwtCookie();
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body(new MessageResponse("Signed out."));
+  }
+
   @Transactional
   @PostMapping("/testUser")
   public ResponseEntity<?> addTestUser(@Valid @RequestBody User user) {

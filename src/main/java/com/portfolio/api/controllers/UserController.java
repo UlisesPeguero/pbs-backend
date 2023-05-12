@@ -61,7 +61,7 @@ public class UserController extends GenericController<User> {
   }
 
   @GetMapping("testRoles")
-  @PreAuthorize("hasAuthority('USER')")
+  @RolesAllowed("USER")
   public String testRoles() {
     return "It works";
   }
