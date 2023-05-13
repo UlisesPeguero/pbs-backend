@@ -63,7 +63,6 @@ public class SecurityConfiguration {
             authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
                 // .requestMatchers("/api/**").hasAuthority("ADMIN")
-                .requestMatchers("/api/employees/**").hasAuthority("EMPLOYEES")
                 .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                 .anyRequest().authenticated());
     httpSecurity.authenticationProvider(authenticationProvider());
