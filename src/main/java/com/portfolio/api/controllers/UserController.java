@@ -5,6 +5,8 @@ import java.net.http.HttpResponse.ResponseInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/users")
+
 public class UserController extends GenericController<User> {
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
