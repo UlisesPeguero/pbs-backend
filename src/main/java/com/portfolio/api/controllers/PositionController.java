@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/positions")
-@RolesAllowed("TEST")
+@RolesAllowed("POSITIONS")
 public class PositionController extends GenericController<Position> {
     public PositionController(PositionRepository positionRepository) {
         super(positionRepository);
     }
 
-    @RolesAllowed("ADMIN")
     @GetMapping("/test")
+    @RolesAllowed("TEST")
     public String test() {
         return "testing";
     }

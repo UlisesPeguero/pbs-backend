@@ -11,13 +11,12 @@ import com.portfolio.api.repositories.ModuleRepository;
 
 import jakarta.annotation.security.RolesAllowed;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/modules")
-@RolesAllowed("MODULES")
+@RolesAllowed("TEST")
 public class ModulesController extends GenericController<Module> {
 
   public ModulesController(ModuleRepository moduleRepository) {
-    super(moduleRepository);
+    super(moduleRepository, "TEST");
   }
 }

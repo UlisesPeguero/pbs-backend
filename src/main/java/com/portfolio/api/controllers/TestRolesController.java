@@ -11,11 +11,11 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("api/tests")
-@PreAuthorize("hasAuthority('EMPLOYEES')")
+// @PreAuthorize("hasAuthority('EMPLOYEES')")
+@RolesAllowed("ADMIN")
 public class TestRolesController extends GenericController<Employee> {
 
   public TestRolesController(EmployeeRepository employeeRepository) {
@@ -28,8 +28,8 @@ public class TestRolesController extends GenericController<Employee> {
   }
 
   @GetMapping("other")
-  @PreAuthorize("hasAuthority('ADMIN')")
-  // @RolesAllowed("USER")
+  // @PreAuthorize("hasAuthority('ADMIN')")
+  @RolesAllowed("USER")
   public String otherRole() {
     return "Works with other role";
   }

@@ -58,7 +58,7 @@ public class SecurityConfiguration {
         .csrf(crsf -> crsf.disable())
         .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        // .securityMatcher("/api/**")
+        .securityMatcher("/api/**")
         .authorizeHttpRequests(
             authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
