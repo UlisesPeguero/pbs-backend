@@ -61,8 +61,8 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
-                // .requestMatchers("/api/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                .requestMatchers("/api/**").hasAuthority("ADMIN") // TODO: remove to activate security
+                // .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                 .anyRequest().authenticated());
     httpSecurity.authenticationProvider(authenticationProvider());
     httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
