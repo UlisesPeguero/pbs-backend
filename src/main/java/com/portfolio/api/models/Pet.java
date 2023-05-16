@@ -5,17 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.Length;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "pets")
-public class Pet extends AbstractEntity implements GenericEntity<Pet>{
+public class Pet extends AbstractEntity implements GenericEntity<Pet> {
 
-    @Column(length=25)
+    @Column(length = 25)
     private String petName;
-
 
     @Column(length = 25)
     private String breed;

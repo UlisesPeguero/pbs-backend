@@ -56,7 +56,7 @@ public class AuthenticationController {
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, Errors validation) {
-    logger.info("Signin attempt: " + loginRequest.getUsername());
+    logger.info("Signin attempt: {}", loginRequest.getUsername());
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));

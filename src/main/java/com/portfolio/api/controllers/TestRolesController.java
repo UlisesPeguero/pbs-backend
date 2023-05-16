@@ -8,8 +8,6 @@ import com.portfolio.api.repositories.EmployeeRepository;
 
 import jakarta.annotation.security.RolesAllowed;
 
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController

@@ -1,10 +1,8 @@
 package com.portfolio.api.controllers;
 
-import java.lang.module.ResolutionException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.portfolio.api.controllers.payloads.MessageResponse;
 import com.portfolio.api.exceptions.FailedValidationException;
-import com.portfolio.api.exceptions.ResourceNotFoundException;
 import com.portfolio.api.exceptions.UnauthorizedRequestException;
 import com.portfolio.api.models.GenericEntity;
 import com.portfolio.api.repositories.GenericRepository;
@@ -102,7 +99,7 @@ public abstract class GenericController<T extends GenericEntity<T>> {
 
   // Permissions based in just module role
   protected void checkForPrivileges(HttpServletRequest request) {
-    checkForPrivileges(request, mainRole);
+    checkForPrivilegesWithString(request, mainRole);
   }
 
   // Permissions using a "." separated system of module.privilege
@@ -112,6 +109,7 @@ public abstract class GenericController<T extends GenericEntity<T>> {
   }
 
   protected void checkForPrivilegesWithString(HttpServletRequest request, String privilegeString) {
+    System.out.println(privilegeString);
     if (!request.isUserInRole(privilegeString)) {
       throw new UnauthorizedRequestException(request.getServletPath());
     }
