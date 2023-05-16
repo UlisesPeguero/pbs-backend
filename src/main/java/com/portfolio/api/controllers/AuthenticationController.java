@@ -56,7 +56,7 @@ public class AuthenticationController {
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, Errors validation) {
-    logger.info("Signin attempt: " + loginRequest.getUsername());
+    logger.info("Signin attempt: {}", loginRequest.getUsername());
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -69,6 +69,13 @@ public class AuthenticationController {
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(new AuthenticatedUserResponse(user));
+  }
+
+  @PostMapping("/signout")
+  public ResponseEntity<?> logoutUser() {
+    ResponseCookie cookie = cookiesManager.createEmptyJwtCookie();
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body(new MessageResponse("Signed out."));
   }
 
   @Transactional
