@@ -37,7 +37,8 @@ public abstract class GenericController<T extends GenericEntity<T>> {
 
   protected GenericController(GenericRepository<T> repository, String mainRole) {
     this(repository);
-    this.mainRole = mainRole;
+    // TODO: Uncomment to activate privileges
+    // this.mainRole = mainRole;
   }
 
   protected GenericController(GenericService<T> service) {
