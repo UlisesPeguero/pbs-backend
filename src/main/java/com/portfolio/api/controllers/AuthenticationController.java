@@ -65,7 +65,7 @@ public class AuthenticationController {
     User user = (User) authentication.getPrincipal();
 
     ResponseCookie jwtCookie = cookiesManager.createJwtCookie(user);
-
+    logger.info("Signed as {} with token {}", user.getUsername(), jwtCookie.toString());
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(new AuthenticatedUserResponse(user));
