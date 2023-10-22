@@ -17,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
@@ -46,8 +47,8 @@ public class User extends AbstractEntity implements GenericEntity<User>, UserDet
   private List<Role> roles = new ArrayList<>();
 
   // TODO: Add Employee model to the user
-  // @OneToOne
-  // private Employee employee;
+  @OneToOne
+  private Employee employee;
 
   @Transient
   @JsonIgnore

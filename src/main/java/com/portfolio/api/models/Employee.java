@@ -2,6 +2,7 @@ package com.portfolio.api.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -42,6 +43,9 @@ public class Employee extends AbstractEntity implements GenericEntity<Employee> 
     @NotBlank(message = "Email cannot be empty.")
     @Email
     private String email;
+
+    @OneToOne(mappedBy = "employee")
+    private User user;
 
     public void update(Employee updatedEmployee) {
         this.firstName = updatedEmployee.getFirstName();
