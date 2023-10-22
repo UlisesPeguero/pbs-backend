@@ -44,9 +44,6 @@ public class Employee extends AbstractEntity implements GenericEntity<Employee> 
     @Email
     private String email;
 
-    @OneToOne(mappedBy = "employee")
-    private User user;
-
     public void update(Employee updatedEmployee) {
         this.firstName = updatedEmployee.getFirstName();
         this.lastName = updatedEmployee.getLastName();

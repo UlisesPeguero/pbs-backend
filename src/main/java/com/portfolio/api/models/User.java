@@ -46,7 +46,6 @@ public class User extends AbstractEntity implements GenericEntity<User>, UserDet
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private List<Role> roles = new ArrayList<>();
 
-  // TODO: Add Employee model to the user
   @OneToOne
   private Employee employee;
 
