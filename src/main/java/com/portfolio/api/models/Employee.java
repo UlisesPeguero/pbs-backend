@@ -53,4 +53,8 @@ public class Employee extends AbstractEntity implements GenericEntity<Employee> 
         this.email = updatedEmployee.getEmail();
         this.active = updatedEmployee.getActive();
     }
+
+    public String getFullName() {
+        return this.lastName + ", " + this.firstName;
+    }
 }

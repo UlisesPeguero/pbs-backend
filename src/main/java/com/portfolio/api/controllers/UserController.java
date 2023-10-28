@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.api.models.User;
+import com.portfolio.api.models.dtos.UserInfoDto;
 import com.portfolio.api.repositories.UserRepository;
 import com.portfolio.api.security.JwtCookiesManager;
 import com.portfolio.api.services.UserDetailsServiceImplementation;
@@ -34,6 +35,7 @@ public class UserController extends GenericController<User> {
 
   public UserController(UserRepository userRepository) {
     super(userRepository, "ADMIN");
+    this.typeDto = UserInfoDto.class;
   }
 
   @GetMapping("testToken")
