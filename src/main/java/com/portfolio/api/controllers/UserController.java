@@ -35,7 +35,6 @@ public class UserController extends GenericController<User> {
 
   public UserController(UserRepository userRepository) {
     super(userRepository, "ADMIN");
-    this.typeDto = UserInfoDto.class;
   }
 
   @GetMapping("testToken")

@@ -39,9 +39,14 @@ public abstract class GenericService<T extends GenericEntity<T>> {
     return repository.findAll(sort);
   }
 
-  public <S> List<S> getAll(String orderBy, String order, Class<S> type) {
+  // public <S> List<S> getAll(String orderBy, String order, Class<S> type) {
+  // Sort sort = getSorter(orderBy, order);
+  // return repository.getGridView(sort, type);
+  // }
+
+  public List<?> getGridAll(String orderBy, String order) {
     Sort sort = getSorter(orderBy, order);
-    return repository.findAll(sort, type);
+    return repository.getGridView(sort);
   }
 
   public List<T> getAll() {

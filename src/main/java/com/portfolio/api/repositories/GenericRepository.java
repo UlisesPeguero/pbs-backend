@@ -18,8 +18,6 @@ public interface GenericRepository<T extends GenericEntity<T>> extends JpaReposi
 
   public List<T> findByActive(Boolean active, Pageable pageable);
 
-  public <S> List<S> findByActive(Boolean active, Sort sort, Class<S> type);
-
-  @Query("select e from #{#entityName} e")
-  public <S> List<S> findAll(Sort sort, Class<S> type);
+  @Query("SELECT e FROM #{#entityName} e")
+  public <S> List<S> getGridView(Sort sort);
 }

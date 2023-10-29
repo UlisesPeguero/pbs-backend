@@ -29,7 +29,6 @@ public abstract class GenericController<T extends GenericEntity<T>> {
 
   protected final GenericService<T> service;
   protected String mainRole = "ADMIN"; // default main role
-  Class<?> typeDto;
 
   protected GenericController(GenericRepository<T> repository) {
     this.service = new GenericService<T>(repository) {
@@ -61,7 +60,7 @@ public abstract class GenericController<T extends GenericEntity<T>> {
       @RequestParam(required = false) String order,
       HttpServletRequest request) {
     checkForPrivileges(request);
-    return ResponseEntity.ok(service.getAll(orderBy, order, typeDto));
+    return ResponseEntity.ok(service.getGridAll(orderBy, order));
   }
 
   @GetMapping("/page/{page}")
