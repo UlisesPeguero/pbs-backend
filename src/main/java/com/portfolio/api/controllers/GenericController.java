@@ -2,6 +2,8 @@ package com.portfolio.api.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -26,6 +28,8 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 public abstract class GenericController<T extends GenericEntity<T>> {
+
+  private static final Logger logger = LoggerFactory.getLogger("GenericController");
 
   protected final GenericService<T> service;
   protected String mainRole = "ADMIN"; // default main role
@@ -74,6 +78,17 @@ public abstract class GenericController<T extends GenericEntity<T>> {
     return ResponseEntity.ok(service.getAll(page, rows, orderBy, order));
   }
 
+  @GetMapping("/grid/{page}")
+  public ResponseEntity<Page<?>> getGridPage(
+      @PathVariable Integer page,
+      @RequestParam(required = false) Integer rows,
+      @RequestParam(required = false) String orderBy,
+      @RequestParam(required = false) String order,
+      HttpServletRequest request) {
+    checkForPrivileges(request);
+    return ResponseEntity.ok(service.getGridAll(page, rows, orderBy, order));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<T> get(@PathVariable Long id, HttpServletRequest request) {
     checkForPrivileges(request);
@@ -119,7 +134,7 @@ public abstract class GenericController<T extends GenericEntity<T>> {
   }
 
   protected void checkForPrivilegesWithString(HttpServletRequest request, String privilegeString) {
-    System.out.println(privilegeString);
+    logger.info("path: {}   privilege: {}", request.getRequestURI(), privilegeString);
     if (!request.isUserInRole(privilegeString)) {
       throw new UnauthorizedRequestException(request.getServletPath());
     }

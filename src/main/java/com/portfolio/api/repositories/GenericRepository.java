@@ -2,6 +2,7 @@ package com.portfolio.api.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,7 @@ public interface GenericRepository<T extends GenericEntity<T>> extends JpaReposi
 
   @Query("SELECT e FROM #{#entityName} e")
   public <S> List<S> getGridView(Sort sort);
+
+  @Query("SELECT e FROM #{#entityName} e")
+  public <S> Page<S> getGridView(Pageable pageable);
 }

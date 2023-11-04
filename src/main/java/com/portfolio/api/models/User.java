@@ -38,6 +38,7 @@ public class User extends AbstractEntity implements GenericEntity<User>, UserDet
   @Column(length = 30)
   private String username;
 
+  @JsonIgnore
   @NotBlank
   @Column(length = 128)
   private String password;
