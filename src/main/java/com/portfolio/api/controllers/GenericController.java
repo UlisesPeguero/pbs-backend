@@ -1,7 +1,10 @@
 package com.portfolio.api.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -27,8 +30,10 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public abstract class GenericController<T extends GenericEntity<T>> {
 
+  private static final Logger logger = LoggerFactory.getLogger("GenericController");
+
   protected final GenericService<T> service;
-  protected String mainRole = "ADMIN";
+  protected String mainRole = "ADMIN"; // default main role
 
   protected GenericController(GenericRepository<T> repository) {
     this.service = new GenericService<T>(repository) {
@@ -63,6 +68,35 @@ public abstract class GenericController<T extends GenericEntity<T>> {
       HttpServletRequest request) {
     checkForPrivileges(request);
     return ResponseEntity.ok(service.getAll(page, rows, orderBy, order));
+  }
+
+  @GetMapping(value = { "/grid", "/grid/{page}" })
+  public ResponseEntity<?> getGridPage(
+      @PathVariable Optional<Integer> page,
+      @RequestParam(required = false) Integer rows,
+      @RequestParam(required = false) String orderBy,
+      @RequestParam(required = false) String order,
+      HttpServletRequest request) {
+    checkForPrivileges(request);
+    return ResponseEntity.ok(
+        page.isEmpty()
+            ? service.getGridAll(orderBy, order)
+            : service.getGridAll(page.get(), rows, orderBy, order));
+  }
+
+  @GetMapping(value = { "/search/{searchBy}", "search/{searchBy}/{page}" })
+  public ResponseEntity<?> search(
+      @PathVariable String searchBy,
+      @PathVariable Optional<Integer> page,
+      @RequestParam(required = false) Integer rows,
+      @RequestParam(required = false) String orderBy,
+      @RequestParam(required = false) String order,
+      HttpServletRequest request) {
+    checkForPrivileges(request);
+    return ResponseEntity.ok(
+        page.isEmpty()
+            ? service.search(searchBy, orderBy, order)
+            : service.search(searchBy, page.get(), rows, orderBy, order));
   }
 
   @GetMapping("/{id}")
@@ -110,7 +144,7 @@ public abstract class GenericController<T extends GenericEntity<T>> {
   }
 
   protected void checkForPrivilegesWithString(HttpServletRequest request, String privilegeString) {
-    System.out.println(privilegeString);
+    logger.info("path: {}   privilege: {}", request.getRequestURI(), privilegeString);
     if (!request.isUserInRole(privilegeString)) {
       throw new UnauthorizedRequestException(request.getServletPath());
     }

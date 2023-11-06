@@ -2,7 +2,6 @@ package com.portfolio.api.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -52,5 +51,9 @@ public class Employee extends AbstractEntity implements GenericEntity<Employee> 
         this.phoneNumber = updatedEmployee.getPhoneNumber();
         this.email = updatedEmployee.getEmail();
         this.active = updatedEmployee.getActive();
+    }
+
+    public String getFullName() {
+        return this.lastName + ", " + this.firstName;
     }
 }

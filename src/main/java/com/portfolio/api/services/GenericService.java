@@ -17,6 +17,7 @@ public abstract class GenericService<T extends GenericEntity<T>> {
 
   protected final GenericRepository<T> repository;
   protected final String resourceName;
+  static int DEFAULT_ROWS = 15;
 
   protected GenericService(GenericRepository<T> repository) {
     this(repository, "resource");
@@ -28,28 +29,45 @@ public abstract class GenericService<T extends GenericEntity<T>> {
   }
 
   public Page<T> getAll(Integer pageNumber, Integer rowsPerPage, String orderBy, String order) {
-    Pageable page;
-    Sort sort = getSorter(orderBy, order);
-    page = PageRequest.of(pageNumber, rowsPerPage == null ? 15 : rowsPerPage, sort);
-    return repository.findAll(page);
+    return repository.findAll(getPager(pageNumber, rowsPerPage, orderBy, order));
   }
 
   public List<T> getAll(String orderBy, String order) {
-    Sort sort = getSorter(orderBy, order);
-    return repository.findAll(sort);
+    return repository.findAll(getSorter(orderBy, order));
   }
 
   public List<T> getAll() {
     return repository.findAll();
   }
 
+  public List<?> getGridAll(String orderBy, String order) {
+    return repository.getGridView(getSorter(orderBy, order));
+  }
+
+  public Page<?> getGridAll(Integer pageNumber, Integer rowsPerPage, String orderBy, String order) {
+    return repository.getGridView(getPager(pageNumber, rowsPerPage, orderBy, order));
+  }
+
+  public List<?> search(String searchBy, String orderBy, String order) {
+    return repository.search(searchBy, getSorter(orderBy, order));
+  }
+
+  public Page<?> search(String searchBy, Integer pageNumber, Integer rowsPerPage, String orderBy, String order) {
+    return repository.search(searchBy, getPager(pageNumber, rowsPerPage, orderBy, order));
+  }
+
   protected Sort getSorter(String orderBy, String order) {
     Sort sort = Sort.unsorted();
-    if (orderBy != null || order != null) {
+    if (orderBy != null)
       sort = Sort.by(orderBy);
+    if (order != null)
       sort = "DESC".equalsIgnoreCase(order) ? sort.descending() : sort.ascending();
-    }
     return sort;
+  }
+
+  protected Pageable getPager(Integer pageNumber, Integer rowsPerPage, String orderBy, String order) {
+    Sort sort = getSorter(orderBy, order);
+    return PageRequest.of(pageNumber, rowsPerPage == null ? DEFAULT_ROWS : rowsPerPage, sort);
   }
 
   public T get(Long id) throws ResourceNotFoundException {
