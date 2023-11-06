@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.query.Param;
+
 import com.portfolio.api.models.GenericEntity;
 
 @NoRepositoryBean
@@ -24,4 +26,10 @@ public interface GenericRepository<T extends GenericEntity<T>> extends JpaReposi
 
   @Query("SELECT e FROM #{#entityName} e")
   public <S> Page<S> getGridView(Pageable pageable);
+
+  @Query("SELECT e FROM #{#entityName} e")
+  public <S> List<S> search(@Param("searchBy") String searchBy, Sort sort);
+
+  @Query("SELECT e FROM #{#entityName} e")
+  public <S> Page<S> search(@Param("searchBy") String searchBy, Pageable pageable);
 }

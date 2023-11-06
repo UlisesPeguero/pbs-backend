@@ -1,6 +1,7 @@
 package com.portfolio.api.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,15 +59,6 @@ public abstract class GenericController<T extends GenericEntity<T>> {
     return ResponseEntity.ok(service.getAll(orderBy, order));
   }
 
-  @GetMapping("/grid/all")
-  public ResponseEntity<List<?>> getGridAll(
-      @RequestParam(required = false) String orderBy,
-      @RequestParam(required = false) String order,
-      HttpServletRequest request) {
-    checkForPrivileges(request);
-    return ResponseEntity.ok(service.getGridAll(orderBy, order));
-  }
-
   @GetMapping("/page/{page}")
   public ResponseEntity<Page<T>> getPage(
       @PathVariable Integer page,
@@ -78,15 +70,33 @@ public abstract class GenericController<T extends GenericEntity<T>> {
     return ResponseEntity.ok(service.getAll(page, rows, orderBy, order));
   }
 
-  @GetMapping("/grid/{page}")
-  public ResponseEntity<Page<?>> getGridPage(
-      @PathVariable Integer page,
+  @GetMapping(value = { "/grid", "/grid/{page}" })
+  public ResponseEntity<?> getGridPage(
+      @PathVariable Optional<Integer> page,
       @RequestParam(required = false) Integer rows,
       @RequestParam(required = false) String orderBy,
       @RequestParam(required = false) String order,
       HttpServletRequest request) {
     checkForPrivileges(request);
-    return ResponseEntity.ok(service.getGridAll(page, rows, orderBy, order));
+    return ResponseEntity.ok(
+        page.isEmpty()
+            ? service.getGridAll(orderBy, order)
+            : service.getGridAll(page.get(), rows, orderBy, order));
+  }
+
+  @GetMapping(value = { "/search/{searchBy}", "search/{searchBy}/{page}" })
+  public ResponseEntity<?> search(
+      @PathVariable String searchBy,
+      @PathVariable Optional<Integer> page,
+      @RequestParam(required = false) Integer rows,
+      @RequestParam(required = false) String orderBy,
+      @RequestParam(required = false) String order,
+      HttpServletRequest request) {
+    checkForPrivileges(request);
+    return ResponseEntity.ok(
+        page.isEmpty()
+            ? service.search(searchBy, orderBy, order)
+            : service.search(searchBy, page.get(), rows, orderBy, order));
   }
 
   @GetMapping("/{id}")
